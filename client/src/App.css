@@ -1,20 +1,19 @@
 main.App {
-    text-align: center;
     padding: 20px;
     width: 75%;
-    margin: auto;
-}
-
-table {
-    background-color: white;
+    margin: 0 auto;
 }
 
 section {
     border-radius: 5px;
-    background-color: white;
+    border: .2rem solid #ececec;
     padding: 20px;
-    margin: 20px;
-    -webkit-box-shadow: 10px 10px 27px -13px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 10px 10px 27px -13px rgba(0, 0, 0, 0.75);
-    box-shadow: 10px 10px 27px -13px rgba(0, 0, 0, 0.75);
+    margin: 20px 0;
+}
+
+textarea {
+    max-width: 100%;
+    min-width: 50%;
+    max-height: 300px;
+    min-height: 100px;
 }

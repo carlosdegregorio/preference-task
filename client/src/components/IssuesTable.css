@@ -1,0 +1,9 @@
+.react-bootstrap-table {
+    background-color: white;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.pagination {
+    float: right;
+}
