@@ -22,6 +22,11 @@ Use the backend technology you want, for frontend you must use VueJS or React, a
 You can use the DB technology you want.
 
 ## Technologies
+- **Back-end**
+  - [**Express**](https://www.npmjs.com/package/express) 
+  - [**Socket.io**](https://www.npmjs.com/package/socket.io). Socket.io enables real-time bidirectional event-based communication.
+  - [**Nodemon**](https://www.npmjs.com/package/nodemon). Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+  - [**Concurrently**](https://www.npmjs.com/package/concurrently). Run multiple commands concurrently.
 
 ## Installation
 [React with TypeScript](https://create-react-app.dev/docs/adding-typescript/) 
