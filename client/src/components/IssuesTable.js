@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';

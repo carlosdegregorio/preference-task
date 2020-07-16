@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
     // Send all issues to the new user 
     controller.readIssues()
         .then(data => { socket.emit("READ_ISSUES", data) });
-
+    
     // Update action
     socket.on('UPDATE_ISSUE', (issue) => {
         controller.updateIssue(issue)
@@ -28,6 +28,7 @@ io.on('connection', (socket) => {
 
     // Create action
     socket.on('CREATE_ISSUE', (issue) => {
+        console.log(io.sockets.clients());
         controller.createIssue(issue)
             .then(data => { socket.broadcast.emit("READ_ISSUES", data); socket.emit("READ_ISSUES", data); })
             .catch(err => console.log(err));

@@ -54,7 +54,7 @@ exports.readIssues = () => {
  * Desc: Updates an issue given an id
  */
 exports.updateIssue = async (issue) => {
-    collection.findOneAndUpdate({ _id: issue._id }, {
+    return collection.findOneAndUpdate({ _id: issue._id }, {
         $set: {
             title: issue.title,
             description: issue.description,

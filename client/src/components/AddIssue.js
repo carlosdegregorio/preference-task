@@ -5,6 +5,7 @@ import { GlobalContext } from '../context/GlobalState';
 import Button from 'react-bootstrap/Button';
 
 export const AddIssue = () => {
+    const [validated, setValidated] = useState(false);
     const [title, setTitle] = useState('');
     const [status, setStatus] = useState('Todo');
     const [severity, setSeverity] = useState('High');
@@ -14,21 +15,27 @@ export const AddIssue = () => {
     const onSubmit = event => {
         event.preventDefault();
         event.stopPropagation();
-        const newIssue = {
-            title: title,
-            description: description,
-            severity: severity,
-            status: status
+        const form = event.currentTarget;
+        if (form.checkValidity() === true) {
+            event.preventDefault();
+            const newIssue = {
+                title: title,
+                description: description,
+                severity: severity,
+                status: status
+            }
+            addIssue(newIssue);
         }
-        addIssue(newIssue);
+        setValidated(true);
     };
     return (
         <section id="issueForm">
-            <Form onSubmit={onSubmit} noValidate>
+            <Form onSubmit={onSubmit} noValidate validated={validated}>
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridTitle">
                         <Form.Label>Title</Form.Label>
-                        <Form.Control placeholder="Enter title..." value={title} onChange={e => setTitle(e.target.value)} />
+                        <Form.Control type="text" placeholder="Enter title..." value={title} onChange={e => setTitle(e.target.value)} required />
+                        <Form.Control.Feedback type="invalid">Please provide a valid title</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridStatus">
                         <Form.Label>Status</Form.Label>
@@ -49,7 +56,8 @@ export const AddIssue = () => {
                 </Form.Row>
                 <Form.Group controlId="formGridDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter a description..." rows="5" value={description} onChange={e => setDescription(e.target.value)} />
+                    <Form.Control as="textarea" type="text" placeholder="Enter a description..." rows="5" value={description} onChange={e => setDescription(e.target.value)} required />
+                    <Form.Control.Feedback type="invalid">Please provide a valid description</Form.Control.Feedback>
                 </Form.Group>
                 <Button variant="primary" type="submit">Submit</Button>
             </Form>

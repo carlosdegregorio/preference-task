@@ -1,5 +1,6 @@
 import React, { createContext, useReducer } from 'react'
 import AppReducer from './AppReducer';
+import { toast } from 'react-toastify';
 import io from 'socket.io-client';
 const ENDPOINT = "localhost:5000";
 const socket = io(ENDPOINT);
@@ -16,7 +17,7 @@ export const GlobalContext = createContext(initialState);
 // Provider component
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
-    
+
     socket.on('READ_ISSUES', res => {
         try {
             if (res.error) throw res.error;
@@ -27,57 +28,36 @@ export const GlobalProvider = ({ children }) => {
                 });
             }
         } catch (err) {
-            dispatch({
-                type: 'TRANSACTION_ERROR',
-                payload: err
-            });
+            toast.error(err.message);
         }
     });
 
     const deleteIssue = async (id) => {
         try {
-            await socket.emit('DELETE_ISSUE', id);
-            
-            dispatch({
-                type: 'DELETE_ISSUE',
-                payload: id
-            });
+            if (!socket.connected) throw new Error("There is no connection");
+            else socket.emit('DELETE_ISSUE', id);
         } catch (err) {
-            dispatch({
-                type: 'TRANSACTION_ERROR',
-                payload: err
-            });
+            toast.error(err.message);
         }
     }
 
     const addIssue = async (issue) => {
         try {
-            await socket.emit("CREATE_ISSUE", issue);
-            
-            dispatch({
-                type: 'CREATE_ISSUE',
-                payload: issue
-            });
+            console.log(socket.connected);
+            if (!socket.connected) throw new Error("There is no connection");
+            else socket.emit("CREATE_ISSUE", issue)
         } catch (err) {
-            dispatch({
-                type: 'TRANSACTION_ERROR',
-                payload: err
-            });
+            toast.error(err.message);
         }
     }
 
     const updateIssue = async (issue) => {
         try {
-            await socket.emit("UPDATE_ISSUE", issue);
-            dispatch({
-                type: 'UPDATE_ISSUE',
-                payload: issue
-            });
+            
+            if (!socket.connected) throw new Error("There is no connection");
+            else socket.emit("UPDATE_ISSUE", issue);
         } catch (err) {
-            dispatch({
-                type: 'TRANSACTION_ERROR',
-                payload: err
-            });
+            toast.error(err.message);
         }
     }
 
