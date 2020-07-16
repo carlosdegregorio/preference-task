@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
-import { Badge } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
+import { GlobalContext } from '../context/GlobalState';
 import './IssuesTable.css';
 
-const IssuesTable = (props) => {
-    const { issues } = props;
 
+const IssuesTable = (props) => {
+    const {issues, deleteIssue } = useContext(GlobalContext);
     const checkColor = (item) => {
         if (item === "Todo" || item === "High") return "danger";
         else if (item === "Doing" || item === "Medium") return "warning";
@@ -87,13 +88,20 @@ const IssuesTable = (props) => {
     }, {
         dataField: 'description',
         text: 'Description'
+    }, {
+        text: 'Actions',
+        dataField: 'delete',
+        editable: false,
+        formatter: (cell, row) => {
+            return (<Button variant="danger" onClick={() => deleteIssue(row._id)}>Delete</Button>);
+        },
     }];
     return (
         <section>
             <h3><strong>Issues list</strong></h3>
             <BootstrapTable
                 bootstrap4
-                keyField='id'
+                keyField='_id'
                 bordered={false}
                 data={issues}
                 columns={columns}
