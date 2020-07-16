@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
@@ -8,7 +8,7 @@ import './IssuesTable.css';
 
 
 const IssuesTable = (props) => {
-    const {issues, deleteIssue } = useContext(GlobalContext);
+    const { issues, deleteIssue, updateIssue } = useContext(GlobalContext);
     const checkColor = (item) => {
         if (item === "Todo" || item === "High") return "danger";
         else if (item === "Doing" || item === "Medium") return "warning";
@@ -109,6 +109,9 @@ const IssuesTable = (props) => {
                 cellEdit={cellEditFactory({
                     mode: 'click',
                     blurToSave: true,
+                    afterSaveCell: (oldValue, newValue, row, column) => {
+                        updateIssue(row);
+                    }
                 })}
             />
         </section>

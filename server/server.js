@@ -2,63 +2,49 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const socketIo = require("socket.io");
-const db = require("monk")("localhost:27017/test");
+const controller = require("./issues");
 
-const collection = db.get("collection");
-
-const port = process.env.PORT || 4001;
-const index = require("./routes/index");
-
+const port = process.env.PORT || 5000;
 const app = express();
-
 const server = http.createServer(app);
-
 const io = socketIo(server);
 
-let interval;
 
 // socket.io connection
 io.on('connection', (socket) => {
-    console.log("Connected to Socket!!" + socket.id);
-    if (interval) {
-        clearInterval(interval);
-    }
-    interval = setInterval(() => getIssues(socket), 1000);
-    socket.on("disconnect", () => {
-        console.log("Client disconnected");
-        clearInterval(interval);
+    
+    console.log(`New client connected with the id: ${socket.id}`);
+
+    // Send all issues to the new user 
+    controller.readIssues()
+        .then(data => { socket.emit("READ_ISSUES", data) });
+
+    // Update action
+    socket.on('UPDATE_ISSUE', (issue) => {
+        controller.updateIssue(issue)
+            .then(data => { socket.broadcast.emit("READ_ISSUES", data); socket.emit("READ_ISSUES", data); })
+            .catch(err => console.log(err));
     });
-
-
-    /*  // Receiving Todos from client
-     socket.on('addTodo', (Todo) => {
-         console.log('socketData: ' + JSON.stringify(Todo));
-         todoController.addTodo(io, Todo);
-     });
- 
-     // Receiving Updated Todo from client
-     socket.on('updateTodo', (Todo) => {
-         console.log('socketData: ' + JSON.stringify(Todo));
-         todoController.updateTodo(io, Todo);
-     });*/
 
     // Create action
     socket.on('CREATE_ISSUE', (issue) => {
-        collection.insert(issue).then((doc) => { })
+        controller.createIssue(issue)
+            .then(data => { socket.broadcast.emit("READ_ISSUES", data); socket.emit("READ_ISSUES", data); })
+            .catch(err => console.log(err));
     });
-    
+
     // Delete action
     socket.on('DELETE_ISSUE', (id) => {
-        console.log(id);
-        collection.findOneAndDelete({ _id: id }).then((doc) => { })
+        controller.deleteIssue(id)
+            .then(data => { socket.broadcast.emit("READ_ISSUES", data); socket.emit("READ_ISSUES", data); })
+            .catch(err => console.log(err));
+    });
+
+    socket.on("disconnect", () => {
+        console.log(`Client ${socket.id} disconnected`);
     });
 })
 
-const getIssues = socket => {
-    collection.find({}).then(data =>
-        socket.emit("GET_ISSUES", { issues: data }));
-}
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, () => console.log(`Server is listening on port ${port}`));
