@@ -1,41 +1,35 @@
-import React, { createContext, useReducer } from 'react'
-import AppReducer from './AppReducer';
+import React, { createContext, useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import io from 'socket.io-client';
 const ENDPOINT = "localhost:5000";
 const socket = io(ENDPOINT);
 
-const initialState = {
-    issues: [],
-    error: null,
-    loading: true
-};
-
 // Create context
-export const GlobalContext = createContext(initialState);
+export const GlobalContext = createContext();
 
 // Provider component
 export const GlobalProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
+    const [issues, setIssues] = useState([]);
 
-    socket.on('READ_ISSUES', res => {
-        try {
-            if (res.error) throw res.error;
-            else {
-                dispatch({
-                    type: 'READ_ISSUES',
-                    payload: res.correct.issues
-                });
+    useEffect(() => {
+        socket.on('READ_ISSUES', res => {
+            try {
+                if (res.error) throw res.error;
+                else setIssues(res.correct.issues);
+            } catch (err) {
+                console.log(err);
+                toast.error(err.message);
             }
-        } catch (err) {
-            toast.error(err.message);
-        }
-    });
+        });
+        socket.on("DELETE_OK", res => toast.success(res));
+        socket.on("UPDATE_OK", res => toast.success(res));
+        socket.on("CREATE_OK", res => toast.success(res));
+    }, [])
 
     const deleteIssue = async (id) => {
         try {
             if (!socket.connected) throw new Error("There is no connection");
-            else socket.emit('DELETE_ISSUE', id);
+            socket.emit('DELETE_ISSUE', id);
         } catch (err) {
             toast.error(err.message);
         }
@@ -43,17 +37,17 @@ export const GlobalProvider = ({ children }) => {
 
     const addIssue = async (issue) => {
         try {
-            console.log(socket.connected);
             if (!socket.connected) throw new Error("There is no connection");
-            else socket.emit("CREATE_ISSUE", issue)
+            await socket.emit("CREATE_ISSUE", issue);
         } catch (err) {
+            console.log(err);
             toast.error(err.message);
         }
     }
 
     const updateIssue = async (issue) => {
         try {
-            
+
             if (!socket.connected) throw new Error("There is no connection");
             else socket.emit("UPDATE_ISSUE", issue);
         } catch (err) {
@@ -62,7 +56,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     return (
-        <GlobalContext.Provider value={{ issues: state.issues, deleteIssue, addIssue, updateIssue }}>
+        <GlobalContext.Provider value={{ issues, deleteIssue, addIssue, updateIssue }}>
             {children}
         </GlobalContext.Provider>
     );

@@ -12,25 +12,28 @@ export const AddIssue = () => {
     const [description, setDescription] = useState('');
 
     const { addIssue } = useContext(GlobalContext);
-    const onSubmit = event => {
+    const onSubmit = async event => {
         event.preventDefault();
-        event.stopPropagation();
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
-            event.preventDefault();
             const newIssue = {
                 title: title,
                 description: description,
                 severity: severity,
                 status: status
             }
-            addIssue(newIssue);
-        }
-        setValidated(true);
+            await addIssue(newIssue);
+            setValidated(false);
+            setTitle('');
+            setSeverity('High');
+            setStatus('Todo');
+            setDescription('');
+        } else
+            setValidated(true);
     };
     return (
         <section id="issueForm">
-            <Form onSubmit={onSubmit} noValidate validated={validated}>
+            <Form onSubmit={onSubmit} noValidate validated={validated} >
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridTitle">
                         <Form.Label>Title</Form.Label>
