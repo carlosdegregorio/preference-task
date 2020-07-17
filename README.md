@@ -22,14 +22,25 @@ Use the backend technology you want, for frontend you must use VueJS or React, a
 You can use the DB technology you want.
 
 ## Technologies
+- **Front-end**
+  - [**React**](https://es.reactjs.org/). A JavaScript library for building user interfaces
+  - [**React-Bootstrap**](https://react-bootstrap.github.io/). React-Bootstrap replaces the Bootstrap JavaScript. Each component has been built from scratch as a true React component, without unneeded dependencies like jQuery.
+  - [**React-Bootstrap-Table2**](https://react-bootstrap-table.github.io/react-bootstrap-table2/). React-Bootstrap-Table2 allow us to implement some complex components to manage a table like pagination, search box, etc.
+  - [**Client Socket.io**](https://www.npmjs.com/package/socket.io). SocketIO enables real-time bidirectional event-based communication.
 - **Back-end**
-  - [**Express**](https://www.npmjs.com/package/express) 
-  - [**Socket.io**](https://www.npmjs.com/package/socket.io). Socket.io enables real-time bidirectional event-based communication.
+  - [**NodeJS**](https://nodejs.org/en/). As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
+  - [**Express**](https://www.npmjs.com/package/express). 
+  - [**Server Socket.io**](https://www.npmjs.com/package/socket.io). SocketIO enables real-time bidirectional event-based communication.
   - [**Nodemon**](https://www.npmjs.com/package/nodemon). Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
-  - [**Concurrently**](https://www.npmjs.com/package/concurrently). Run multiple commands concurrently.
+- **Database**
+  - [**MongoDB**](https://www.mongodb.com/).
+## Installation and deployment
+First of all, we have to install the project dependencies (it may take a while):
+  - In the client folder: `npm i`
+  - In the server folder: `npm i`
 
-## Installation
-[React with TypeScript](https://create-react-app.dev/docs/adding-typescript/) 
-
-`yarn create react-app my-app --template typescript`
-
+After that, we proceed to deploy the application. We have to open two terminals in the same computer, one for the client and the other for the server, and execute the following commands:
+  - Client: `npm start`
+  - Server: `npm start` 
+  
+The database is located in an online server, so there's no need to install it locally.
