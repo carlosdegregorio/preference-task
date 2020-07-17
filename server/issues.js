@@ -3,8 +3,9 @@ const Issue = require("./models/Issue");
 connectDB();
 
 /**
+ * Insert an issue into the database
  * Type: POST 
- * Desc: Create an issue
+ * @param {Issue} issue - Issue object
  */
 exports.createIssue = (issue) => {
     return Issue.create(issue)
@@ -26,8 +27,8 @@ exports.createIssue = (issue) => {
 };
 
 /**
- * Type: GET 
  * Desc: Retrieves all issues
+ * Type: GET
  */
 exports.readIssues = () => {
     return Issue.find({})
@@ -50,6 +51,7 @@ exports.readIssues = () => {
 /**
  * Type: UPDATE 
  * Desc: Updates an issue given an id
+ * @param {Issue} issue - Issue object
  */
 exports.updateIssue = async (issue) => {
     return Issue.findByIdAndUpdate(issue._id, {
@@ -80,6 +82,7 @@ exports.updateIssue = async (issue) => {
 /**
  * Type: DELETE 
  * Desc: Deletes an issue given an id
+ * @param {string} id - Issue id
  */
 exports.deleteIssue = (id) => {
     return Issue.findByIdAndRemove(id)

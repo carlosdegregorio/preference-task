@@ -8,7 +8,9 @@ import './IssuesTable.css';
 
 
 const IssuesTable = (props) => {
+
     const { issues, deleteIssue, updateIssue } = useContext(GlobalContext);
+
     const checkColor = (item) => {
         if (item === "Todo" || item === "High") return "danger";
         else if (item === "Doing" || item === "Medium") return "warning";
@@ -16,19 +18,18 @@ const IssuesTable = (props) => {
     }
 
     const cellFormatter = (cell, row) => {
-
-        return (<Badge pill variant={checkColor(cell)}>
-            {cell}
-        </Badge>);
-
+        return (
+            <Badge pill variant={checkColor(cell)}>
+                {cell}
+            </Badge>
+        );
     };
+
     const options = {
         paginationSize: 4,
         pageStartIndex: 0,
-        alwaysShowAllBtns: true, // Always show next and previous button
-        // withFirstAndLast: false, // Hide the going to First and Last page button
-        // hideSizePerPage: true, // Hide the sizePerPage dropdown always
-        hidePageListOnlyOnePage: true, // Hide the pagination list when only one page
+        alwaysShowAllBtns: true,
+        hidePageListOnlyOnePage: true,
         firstPageText: 'First',
         prePageText: 'Back',
         nextPageText: 'Next',
@@ -45,7 +46,7 @@ const IssuesTable = (props) => {
             text: '10', value: 10
         }, {
             text: 'All', value: issues.length
-        }] // A numeric array is also available. the purpose of above example is custom the text
+        }]
     };
     const columns = [{
         dataField: 'status',
@@ -98,6 +99,7 @@ const IssuesTable = (props) => {
             return (<Button variant="danger" onClick={() => deleteIssue(row._id)}>Delete</Button>);
         },
     }];
+    
     const expandRow = {
         onlyOneExpanding: true,
         renderer: row => (
@@ -106,6 +108,7 @@ const IssuesTable = (props) => {
             </div>
         ),
         showExpandColumn: true,
+        expandByColumnOnly: true,
         expandHeaderColumnRenderer: ({ isAnyExpands }) => {
             if (isAnyExpands) {
                 return <b>-</b>;
@@ -113,7 +116,6 @@ const IssuesTable = (props) => {
             return <b>+</b>;
         },
         expandColumnRenderer: ({ expanded }) => {
-            console.log(expanded);
             if (expanded) {
                 return (
                     <b>-</b>
@@ -124,9 +126,10 @@ const IssuesTable = (props) => {
             );
         }
     };
+    
     return (
         <section>
-            <h3><strong>Issues list</strong></h3>
+            <h3><strong>Table</strong></h3>
             <BootstrapTable
                 bootstrap4
                 keyField='_id'

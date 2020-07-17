@@ -5,6 +5,9 @@ const url = `mongodb+srv://${user}:${password}@cluster0.2qvfu.mongodb.net/${dbna
 const mongoose = require("mongoose");
 const Issue = require("./models/Issue");
 
+/*
+ * Establish the db connection
+ */
 const connectDB = async () => {
     try {
         const conn = await mongoose.connect(url, {
@@ -28,6 +31,9 @@ const connectDB = async () => {
     }
 }
 
+/*
+ * Insert some data into the database
+ */
 const insertSomeData = async () => {
     try {
         const data = [
