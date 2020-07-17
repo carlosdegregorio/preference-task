@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import io from 'socket.io-client';
+
+// Back-edn address
 const ENDPOINT = "localhost:5000";
 const socket = io(ENDPOINT);
 
