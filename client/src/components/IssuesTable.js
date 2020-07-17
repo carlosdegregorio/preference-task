@@ -83,11 +83,13 @@ const IssuesTable = (props) => {
         formatter: cellFormatter,
     }, {
         dataField: 'title',
-        text: 'Title',
-        sort: true
+        text: 'Title'
     }, {
         dataField: 'description',
-        text: 'Description'
+        text: 'Description',
+        editor: {
+            type: Type.TEXTAREA
+        }
     }, {
         text: 'Actions',
         dataField: 'delete',
@@ -96,6 +98,32 @@ const IssuesTable = (props) => {
             return (<Button variant="danger" onClick={() => deleteIssue(row._id)}>Delete</Button>);
         },
     }];
+    const expandRow = {
+        onlyOneExpanding: true,
+        renderer: row => (
+            <div>
+                <p>{row.description}</p>
+            </div>
+        ),
+        showExpandColumn: true,
+        expandHeaderColumnRenderer: ({ isAnyExpands }) => {
+            if (isAnyExpands) {
+                return <b>-</b>;
+            }
+            return <b>+</b>;
+        },
+        expandColumnRenderer: ({ expanded }) => {
+            console.log(expanded);
+            if (expanded) {
+                return (
+                    <b>-</b>
+                );
+            }
+            return (
+                <b>...</b>
+            );
+        }
+    };
     return (
         <section>
             <h3><strong>Issues list</strong></h3>
@@ -114,6 +142,7 @@ const IssuesTable = (props) => {
                             updateIssue(row);
                     }
                 })}
+                expandRow={expandRow}
             />
         </section>
     );
