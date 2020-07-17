@@ -28,7 +28,6 @@ io.on('connection', (socket) => {
 
     // Create action
     socket.on('CREATE_ISSUE', (issue) => {
-        console.log(io.sockets.clients());
         controller.createIssue(issue)
             .then(data => { socket.broadcast.emit("READ_ISSUES", data); socket.emit("READ_ISSUES", data); })
             .catch(err => console.log(err));

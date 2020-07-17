@@ -1,14 +1,14 @@
-const url = "localhost:27017/test";
-const db = require("monk")(url);
-const collection = db.get("collection");
+const connectDB = require('./dbprovider');
+const Issue = require("./models/Issue");
+connectDB();
 
 /**
  * Type: POST 
  * Desc: Create an issue
  */
-exports.createIssue = async (issue) => {
-    return collection.insert(issue)
-        .then(() => collection.find({}))
+exports.createIssue = (issue) => {
+    return Issue.create(issue)
+        .then(() => Issue.find({}))
         .then(res => {
             return {
                 correct: {
@@ -22,8 +22,7 @@ exports.createIssue = async (issue) => {
                 correct: null,
                 error: err
             };
-        })
-        .finally(() => db.close());
+        });
 };
 
 /**
@@ -31,7 +30,7 @@ exports.createIssue = async (issue) => {
  * Desc: Retrieves all issues
  */
 exports.readIssues = () => {
-    return collection.find({})
+    return Issue.find({})
         .then(res => {
             return {
                 correct: {
@@ -45,8 +44,7 @@ exports.readIssues = () => {
                 correct: null,
                 error: err
             };
-        })
-        .finally(() => db.close());
+        });
 };
 
 /**
@@ -54,7 +52,7 @@ exports.readIssues = () => {
  * Desc: Updates an issue given an id
  */
 exports.updateIssue = async (issue) => {
-    return collection.findOneAndUpdate({ _id: issue._id }, {
+    return Issue.findByIdAndUpdate(issue._id, {
         $set: {
             title: issue.title,
             description: issue.description,
@@ -62,7 +60,7 @@ exports.updateIssue = async (issue) => {
             status: issue.status
         }
     })
-        .then(() => collection.find({}))
+        .then(() => Issue.find({}))
         .then(res => {
             return {
                 correct: {
@@ -76,9 +74,7 @@ exports.updateIssue = async (issue) => {
                 correct: null,
                 error: err
             };
-        })
-        .finally(() => db.close());
-
+        });
 };
 
 /**
@@ -86,8 +82,8 @@ exports.updateIssue = async (issue) => {
  * Desc: Deletes an issue given an id
  */
 exports.deleteIssue = (id) => {
-    return collection.findOneAndDelete({ _id: id })
-        .then(() => collection.find({}))
+    return Issue.findByIdAndRemove(id)
+        .then(() => Issue.find({}))
         .then(res => {
             return {
                 correct: {
@@ -101,7 +97,6 @@ exports.deleteIssue = (id) => {
                 correct: null,
                 error: err
             };
-        })
-        .finally(() => db.close());
+        });
 };
 
