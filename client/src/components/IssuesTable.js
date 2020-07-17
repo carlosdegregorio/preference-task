@@ -110,7 +110,8 @@ const IssuesTable = (props) => {
                     mode: 'click',
                     blurToSave: true,
                     afterSaveCell: (oldValue, newValue, row, column) => {
-                        updateIssue(row);
+                        if (oldValue !== newValue)
+                            updateIssue(row);
                     }
                 })}
             />
