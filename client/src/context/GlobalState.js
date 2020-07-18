@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 // Back-edn address
 const ENDPOINT = "localhost:5000";
-const socket = io(ENDPOINT);
+const socket = io(ENDPOINT, {transports: ['websocket']});
 
 // Create context
 export const GlobalContext = createContext();
