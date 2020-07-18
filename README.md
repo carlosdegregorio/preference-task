@@ -37,9 +37,11 @@ You can use the DB technology you want.
   - [**Nodemon**](https://www.npmjs.com/package/nodemon). Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
 - **Database**
   - [**MongoDB**](https://www.mongodb.com/).
-  
+
 ## Installation and deployment
-First of all, we have to open two terminals and install the project dependencies (it may take a while):
+First of all, you must have installed NPM package manager.
+
+Now, you have to open two terminals and install the project dependencies (it may take a while):
   - In the client folder: `npm i`
   - In the server folder: `npm i`
 
