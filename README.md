@@ -2,6 +2,9 @@
 ## Description
 The aim is to develop an application focused on the visualization of existing issues. 
 
+## Final result
+![](./img/example.png)
+
 ## Specifications
 Each issue will be structured by: 
 - Title 
