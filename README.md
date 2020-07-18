@@ -46,7 +46,7 @@ Now, you have to open two terminals and install the project dependencies (it may
   - In the server folder: `npm i`
 
 After that, execute the following commands:
+  - In the server folder: `npm start`. First the server because is inserting some data into the database! 
   - In the client folder: `npm start`
-  - In the server folder: `npm start` 
   
 The database is located in an online server, so there's no need to install it locally.
